@@ -2,7 +2,7 @@
 
 # Set your personal data here:
 rssfile="rss.xml"
-blogfile="2018.html"
+blogfile="blog.html"
 website="https://lukesmith.xyz/"
 stylesheet="..\/style.css" # Characters should be escaped for this variable.
 author="<a href=\"$website\">Luke Smith<\/a>"
@@ -63,9 +63,15 @@ delete() { \
 	sed -i "/<div/{:a;N;/<\/div>/!ba};/$base/d" $blogfile && echo "HTML code removed from blogfile."
 	}
 
-case "$1" in
-	new) getTitle && postNew ;;
-	finalize) finalize ;;
-	delete) delete ;;
-	*) getHelp ;;
-esac
+if [[ -z $EDITOR ]];then
+	echo "No default text editor set. Type 'export EDITOR=\"/path/to/editor\" ' "
+	exit 1
+else
+	case "$1" in
+		new) getTitle && postNew ;;
+		finalize) finalize ;;
+		delete) delete ;;
+		*) getHelp ;;
+	esac
+fi
+exit 0
